@@ -1,54 +1,630 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <style>
-        body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 0; color: #333; }
-        header { background: #f4f4f4; padding: 2rem; text-align: center; }
-        section { padding: 2rem; max-width: 800px; margin: auto; }
-        .project { border-bottom: 1px solid #ccc; padding: 1rem 0; }
-        footer { text-align: center; padding: 1rem; background: #333; color: white; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Suptojit Modak — Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --pure-white: #ffffff;
+      --text-primary: #0c0c0c;
+      --text-secondary: #404040;
+      --text-muted: #6e6e6e;
+      --border-subtle: rgba(0, 0, 0, 0.05);
+      --accent-blue: #2563eb;
+      --accent-indigo: #4f46e5;
+      --accent-violet: #7c3aed;
+      --accent-emerald: #059669;
+      --radius-xl: 2rem;
+      --radius-large: 1.8rem;
+      --radius-medium: 1.2rem;
+      --transition-smooth: cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      background: var(--pure-white);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    #particlesCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .bg-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .bg-abstract-1 {
+      position: absolute;
+      top: -15%;
+      right: -8%;
+      width: 55%;
+      height: 55%;
+      background: radial-gradient(circle at 35% 35%, rgba(37, 99, 235, 0.03) 0%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+    }
+
+    .bg-abstract-2 {
+      position: absolute;
+      bottom: -18%;
+      left: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle at 65% 65%, rgba(124, 58, 237, 0.02) 0%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.3;
+    }
+
+    .bg-grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0,0,0,0.01) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.01) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(circle at 50% 45%, black 18%, transparent 68%);
+      opacity: 0.25;
+    }
+
+    .main-container {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4.5rem;
+      width: 100%;
+    }
+
+    /* NAV */
+    .navbar {
+      position: sticky;
+      top: 1rem;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1.6rem;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      border-radius: 3rem;
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.02);
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .brand-nickname {
+      font-weight: 650;
+      font-size: 1.2rem;
+      letter-spacing: -0.6px;
+      color: #0c0c0c;
+      cursor: default;
+    }
+
+    .nav-items {
+      display: flex;
+      gap: 2.2rem;
+      font-weight: 480;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .nav-items span {
+      cursor: pointer;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-items span:hover {
+      color: #0c0c0c;
+    }
+
+    /* HERO */
+    .hero-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 70vh;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .floating-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 0.35rem 1.2rem;
+      border-radius: 3rem;
+      font-size: 0.78rem;
+      font-weight: 520;
+      letter-spacing: 0.3px;
+      color: var(--accent-indigo);
+      width: fit-content;
+      border: 1px solid rgba(79, 70, 229, 0.1);
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-blue);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
+
+    .hero-name-large {
+      font-size: clamp(3.5rem, 9vw, 6.5rem);
+      font-weight: 580;
+      letter-spacing: -2.8px;
+      line-height: 0.94;
+      color: #0a0a0a;
+    }
+
+    .hero-role-block {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .role-tag {
+      font-size: 1.2rem;
+      font-weight: 440;
+      letter-spacing: -0.3px;
+      padding: 0.25rem 1.2rem;
+      border-radius: 3rem;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .role-tag:first-child {
+      color: var(--accent-blue);
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(37, 99, 235, 0.1);
+    }
+
+    .role-tag:last-child {
+      color: var(--accent-violet);
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(124, 58, 237, 0.1);
+    }
+
+    .statement-large {
+      font-size: 1.2rem;
+      font-weight: 420;
+      color: var(--text-secondary);
+      max-width: 500px;
+      line-height: 1.45;
+      letter-spacing: -0.2px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-solid {
+      background: #0c0c0c;
+      color: white;
+      padding: 0.85rem 2.2rem;
+      border-radius: 3rem;
+      font-weight: 520;
+      font-size: 0.9rem;
+      letter-spacing: -0.1px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+    }
+
+    .btn-solid:hover {
+      background: #1f1f1f;
+      transform: translateY(-2px);
+      box-shadow: 0 18px 30px rgba(0,0,0,0.12);
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1.5px solid #d4d4d4;
+      padding: 0.85rem 2.2rem;
+      border-radius: 3rem;
+      font-weight: 500;
+      color: #0c0c0c;
+      text-decoration: none;
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(37,99,235,0.03);
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+
+    /* SECTIONS */
+    .section-header {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.8rem;
+      display: inline-block;
+    }
+
+    .about-composition {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      background: rgba(255,255,255,0.45);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: var(--radius-xl);
+      padding: 2.2rem;
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+
+    .about-text-large {
+      font-size: 1.2rem;
+      font-weight: 450;
+      letter-spacing: -0.25px;
+      line-height: 1.5;
+      color: #1a1a1a;
+    }
+
+    .focus-showcase {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .focus-item {
+      background: rgba(255,255,255,0.45);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0,0,0,0.03);
+      border-radius: 1.8rem;
+      padding: 1.8rem 1.4rem;
+      transition: all 0.3s ease;
+    }
+
+    .focus-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 40px -18px rgba(0,0,0,0.06);
+      border-color: rgba(37,99,235,0.08);
+    }
+
+    .focus-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .contact-block {
+      background: rgba(255,255,255,0.45);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 2rem;
+      padding: 2.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(0,0,0,0.03);
+      gap: 1.5rem;
+    }
+
+    .email-display {
+      font-size: 1.5rem;
+      font-weight: 480;
+      letter-spacing: -0.4px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      border-bottom: 2px solid rgba(37,99,235,0.25);
+      text-decoration: none;
+      transition: border-color 0.3s;
+    }
+
+    .email-display:hover {
+      border-bottom-color: var(--accent-blue);
+    }
+
+    .footer-row {
+      text-align: center;
+      padding: 1.5rem 0;
+      color: #7a7a7a;
+      font-size: 0.8rem;
+      border-top: 1px solid rgba(0,0,0,0.04);
+    }
+
+    /* MOBILE MEANINGFUL UI */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 0 1rem 1.2rem;
+        gap: 3.5rem;
+      }
+      .navbar {
+        padding: 0.7rem 1.2rem;
+        border-radius: 2.5rem;
+      }
+      .nav-items {
+        gap: 1.5rem;
+        font-size: 0.8rem;
+      }
+      .hero-section {
+        min-height: auto;
+        gap: 1.8rem;
+      }
+      .hero-name-large {
+        font-size: 3.5rem;
+        letter-spacing: -2px;
+      }
+      .role-tag {
+        font-size: 1rem;
+      }
+      .statement-large {
+        font-size: 1rem;
+      }
+      .about-composition {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        padding: 1.6rem;
+      }
+      .focus-showcase {
+        grid-template-columns: 1fr;
+      }
+      .contact-block {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .email-display {
+        font-size: 1.25rem;
+      }
+      .btn-solid, .btn-ghost {
+        padding: 0.75rem 1.8rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-items {
+        gap: 1rem;
+        font-size: 0.75rem;
+      }
+      .hero-name-large {
+        font-size: 2.8rem;
+      }
+      .floating-badge {
+        font-size: 0.7rem;
+      }
+    }
+  </style>
 </head>
 <body>
+  <canvas id="particlesCanvas"></canvas>
+  <div class="bg-layer">
+    <div class="bg-abstract-1"></div>
+    <div class="bg-abstract-2"></div>
+    <div class="bg-grid-pattern"></div>
+  </div>
 
-    <header>
-        <h1>Suptojit Modak</h1>
-        <p>Student</p>
+  <div class="main-container">
+    <header class="navbar">
+      <div class="brand-nickname">Supto</div>
+      <div class="nav-items">
+        <span>About</span>
+        <span>Focus</span>
+        <span>Contact</span>
+      </div>
     </header>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Hi! I'm a passionate creator focused on building clean and functional websites. I love learning new technologies and solving complex problems.</p>
+    <section class="hero-section">
+      <div class="floating-badge">
+        <span class="pulse-dot"></span> Open to opportunities
+      </div>
+      <h1 class="hero-name-large">Suptojit Modak</h1>
+      <div class="hero-role-block">
+        <span class="role-tag">Computer Science</span>
+        <span class="role-tag">Web Developer</span>
+      </div>
+      <p class="statement-large">
+        I build fast, accessible web experiences with clean architecture and modern aesthetics.
+      </p>
+      <div class="hero-actions">
+        <a href="#" class="btn-solid">Get in touch</a>
+        <a href="#" class="btn-ghost">Learn more</a>
+      </div>
     </section>
 
-    <section id="projects">
-        <h2>My Projects</h2>
-        
-        <div class="project">
-            <h3>Project One</h3>
-            <p>A brief description of what this project does and the tools you used to build it.</p>
-            <a href="#">View Link</a>
+    <section>
+      <div class="section-header">About</div>
+      <div class="about-composition">
+        <div class="about-text-large">
+          Computer Science student focused on creating intuitive, high-performance interfaces.
         </div>
-
-        <div class="project">
-            <h3>Project Two</h3>
-            <p>Another awesome piece of work you've completed recently.</p>
-            <a href="#">View Link</a>
+        <div style="color: #4b4b4b; font-size: 0.95rem; line-height: 1.6;">
+          Based in India. I specialize in front-end development, interaction design, and building scalable web applications with attention to detail.
         </div>
+      </div>
     </section>
 
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <p>Email: <a href="mailto:hello@example.com">hello@example.com</a></p>
-        <p>LinkedIn: <a href="#">linkedin.com/in/username</a></p>
+    <section>
+      <div class="section-header">Current Focus</div>
+      <div class="focus-showcase">
+        <div class="focus-item">
+          <div class="focus-icon" style="color: var(--accent-blue);">◈</div>
+          <h3 style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.3rem;">Interaction Design</h3>
+          <p style="color: #555; font-size: 0.88rem;">Micro-interactions that enhance usability.</p>
+        </div>
+        <div class="focus-item">
+          <div class="focus-icon" style="color: var(--accent-emerald);">⎔</div>
+          <h3 style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.3rem;">Web Performance</h3>
+          <p style="color: #555; font-size: 0.88rem;">Optimizing Core Web Vitals.</p>
+        </div>
+        <div class="focus-item">
+          <div class="focus-icon" style="color: var(--accent-violet);">⬡</div>
+          <h3 style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.3rem;">CS Foundations</h3>
+          <p style="color: #555; font-size: 0.88rem;">Algorithms & data structures.</p>
+        </div>
+      </div>
     </section>
 
-    <footer>
-        <p>&copy; 2026 Suptojit Modak</p>
+    <section>
+      <div class="section-header">Contact</div>
+      <div class="contact-block">
+        <span style="color: #4d4d4d; font-weight: 450;">Let's work together.</span>
+        <a href="mailto:suptojit.modak@domain.com" class="email-display">suptojit.modak@domain.com</a>
+      </div>
+    </section>
+
+    <footer class="footer-row">
+      © 2026 • Designed by Suptojit Modak
     </footer>
+  </div>
 
+  <script>
+    (function() {
+      const canvas = document.getElementById('particlesCanvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
+      const particleCount = 45;
+      const connectionDistance = 120;
+
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 0.35;
+          this.vy = (Math.random() - 0.5) * 0.35;
+          this.radius = Math.random() * 1.4 + 0.4;
+          this.opacity = Math.random() * 0.38 + 0.15;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < -10) this.x = width + 10;
+          if (this.x > width + 10) this.x = -10;
+          if (this.y < -10) this.y = height + 10;
+          if (this.y > height + 10) this.y = -10;
+        }
+        draw(ctx) {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(37, 99, 235, ${this.opacity})`;
+          ctx.fill();
+        }
+      }
+
+      function resizeCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+      }
+
+      function createParticles() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+          particles.push(new Particle());
+        }
+      }
+
+      function connectParticles(ctx) {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < connectionDistance) {
+              const opacity = (1 - distance / connectionDistance) * 0.14;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(37, 99, 235, ${opacity})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => { p.update(); p.draw(ctx); });
+        connectParticles(ctx);
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        createParticles();
+      });
+
+      resizeCanvas();
+      createParticles();
+      animate();
+    })();
+  </script>
 </body>
 </html>
